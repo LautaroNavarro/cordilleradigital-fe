@@ -18,7 +18,6 @@ COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# We are doing this because Nginx does not support environment variable injection
-RUN cat /etc/nginx/conf.d/default.conf | sed 's/PORT/'"$PORT"'/g' > /tmp/nginx-default.conf
+COPY ./nginx/run.sh ./
 
-RUN mv /tmp/nginx-default.conf /etc/nginx/conf.d/default.conf
+ENTRYPOINT /bin/bash ./run.sh
